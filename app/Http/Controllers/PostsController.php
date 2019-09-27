@@ -30,17 +30,23 @@ class PostsController extends Controller
         //$posts = DB::select('select posts.*, count(comment) as count from posts join comments on posts.id=comments.post_id group by posts.id');
 
 
+        // Custom order
+        $sort_field = $request->input('sort_field') ?? 'created_at';
+        $sort_order = ($request->input('sort_order') == 'Ascending') ? 'asc' : 'desc';
+
+
         $q = $request->input('keyword');
 
         if(isset($q))
         {
-            $posts = Post::where('title','LIKE','%'.$q.'%')->orWhere('description','LIKE','%'.$q.'%')->orWhere('body','LIKE','%'.$q.'%')->orderBy('created_at', 'desc')->paginate(3);
+            $posts = Post::where('title','LIKE','%'.$q.'%')->orWhere('description','LIKE','%'.$q.'%')->orWhere('body','LIKE','%'.$q.'%')->orderBy($sort_field, $sort_order)->paginate(30);
         }
         else
         {
-            $posts = Post::orderBy('created_at', 'desc')->paginate(3);
+            $posts = Post::orderBy($sort_field, $sort_order)->paginate(30);
 
         }
+
         return view('posts.index')->with('posts', $posts);
 
 
