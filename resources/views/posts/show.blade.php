@@ -48,8 +48,8 @@
             @foreach($comments as $comment)
                 <div class="well">
                     <div class="row">
-                        <div class="col-md-4 col-sm-4">
-                           <p><strong>{{$comment->name}}</strong></p>
+                        <div >
+                           <p ><strong>{{$comment->name}}</strong></p>
                         </div>
                         <p>{{$comment->comment}}  </p>
                     </div>

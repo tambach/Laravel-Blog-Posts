@@ -113,13 +113,13 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
         $comments = DB::table('comments')->where('post_id', $id)->get();
 
         $user_id = auth()->user()->id;
 
-        $user = User::find($user_id);
+        $user = User::findOrFail($user_id);
 
         return view('posts.show')->with('post', $post)->with('user', $user)->with('comments', $comments);
     }
@@ -133,7 +133,7 @@ class PostsController extends Controller
     public function edit($id)
     {
 
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
         //Check for correct user
         if(auth()->user()->id !== $post->user_id)
@@ -172,7 +172,7 @@ class PostsController extends Controller
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
         }
         // Create Post
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
         $post->title = $request->input('title');
         $post->description = $request->input('description');
         $post->body = $request->input('body');
@@ -191,7 +191,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
         // Check for correct user
         if(auth()->user()->id !==$post->user_id){
